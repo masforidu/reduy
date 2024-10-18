@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Include Leaflet CSS -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{% static 'images/background.jpg' %}');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+
+        h1, h2 {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .logo-left, .logo-right {
+            position: absolute;
+            top: 10px;
+            width: 50px;
+            height: auto;
+        }
+
+        .logo-left {
+            left: 20px;
+        }
+
+        .logo-right {
+            right: 20px;
+        }
+
+        #map {
+            height: 500px; /* Ensure map container has height */
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        button {
+            background-color: #4caf70;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #28a078;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        table, th, td {
+            border: 1px solid #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            color: #fff;
+        }
+
+        th {
+            background-color: #4caf12;
+        }
+
+        img {
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+        nav {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        nav a {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        nav a:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <img src="{% static 'shegarland/images/orolog.png' %}" alt="Logo Right" class="logo-right">
+            W/ra Lafa Magaalaa Shaggaar
+            <h1>Kuusaa Galmee Bankii Lafaa</h1>
+            <img src="{% static 'shegarland/images/shegarlog.png' %}" alt="Logo Left" class="logo-left">
+        </h1>
+        
+        <a href="{% url 'export_submissions' %}" class="btn btn-success mb-3">Export Submissions as CSV</a>
+        <!-- Submission table -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Magaalaa</th>
+                    <th>Aanaa</th>
+                    <th>Iddo Adda</th>
+                    <th>Lakk Adda</th>
+                    <th>Gosa Tajajila</th>
+                    <th>Madda Lafa</th>
+                    <th>Tajajila Iddo</th>
+                    <th>Haala Beenya</th>
+                    <th>Qamaa Qophaef</th>
+                    <th>Tajajila Qophaef</th>
+                    <th>Balina Lafa</th>
+                    <th>Shapefile</th>
+                    <th>Suura Iddoo</th>
+                    <th>Mallattoo</th>
+                    <th>Bal.Lafa bahi ta'e</th> 
+                    <th>Balina Lafa Hafe</th> 
+                    <th>Qaama bahi tahef</th> 
+                    <th>Tajajila bahe tahef</th> 
+                    <th>Kan bahi taasise</th> 
+                    <th>Guyyaa bahi ta'e</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in submissions %}
+                <tr>
+                    <td>{{ submission.user.username }}</td>
+                    <td>{{ submission.magaalaa }}</td>
+                    <td>{{ submission.aanaa }}</td>
+                    <td>{{ submission.iddo_adda }}</td>
+                    <td>{{ submission.lakk_adda }}</td>
+                    <td>{{ submission.gosa_tajajila }}</td>
+                    <td>{{ submission.madda_lafa }}</td>
+                    <td>{{ submission.tajajila_iddo }}</td>
+                    <td>{{ submission.haala_beenya }}</td>
+                    <td>{{ submission.qamaa_qophaef }}</td>
+                    <td>{{ submission.tajajila_qophaef }}</td>
+                    <td>{{ submission.balina_lafa }}</td>
+                    <td>
+                        <a href="{{ submission.shapefile.url }}" class="btn btn-info" download>Shapefile buusi</a>
+                    </td>
+                    <td>
+                        <a href="{{ submission.suura_iddoo.url }}" download>
+                            <img src="{{ submission.suura_iddoo.url }}" alt="Suura Iddoo" width="100">
+                        </a>
+                    </td>
+                    <td>
+                        {% if submission.Mallattoo %}
+                            <a href="{{ submission.Mallattoo.url }}" download>
+                                <img src="{{ submission.Mallattoo.url }}" alt="mallattoo" width="80">
+                            </a>
+                        {% else %}
+                            No file available
+                        {% endif %}
+                    </td>
+                    <td>{{ submission.bal_lafa_bahi_tae }}</td> 
+                    <td>{{ submission.balina_lafa_hafe }}</td> 
+                    <td>{{ submission.qaama_bahi_tahef }}</td> 
+                    <td>{{ submission.tajajila_bahi_tahef }}</td> 
+                    <td>{{ submission.kan_bahi_taasise }}</td> 
+                    <td>{{ submission.guyyaa_bahi_tae }}</td> 
+                    <td>
+                        <a href="#" class="btn btn-primary load-geojson" data-geojson-url="{{ submission.shapefile.url }}">Show on Map</a>
+                        <a href="{% url 'edit_submission' submission.id %}" class="btn btn-warning">Edit</a>
+                        <a href="{% url 'delete_submission' submission.id %}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="22">No submissions found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Link to dashboard -->
+    <div style="text-align: center; margin: 10px 0;">
+        <a href="{% url 'dashboard' %}">Gara kuusa ragaa</a>
+    </div>
+
+     <!-- UTM Coordinate Input Section -->
+     <div class="coordinates-input">
+        <label for="easting">UTM Easting:</label>
+        <input type="number" id="easting" placeholder="Enter UTM Easting" />
+        <label for="northing">UTM Northing:</label>
+        <input type="number" id="northing" placeholder="Enter UTM Northing" />
+        <button id="go-to-coordinates">Gara Koordi.Deemi</button>
+    </div>
+
+    <!-- Live Location Button -->
+    <button id="find-location">Find My Location</button>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <!-- KML Upload -->
+    <input type="file" id="kml-file" accept=".kml" />
+    <button id="import-kml">KML Fidi</button>
+
+    <!-- Export Button -->
+    <button id="export-geojson">Shapefile Buusi</button>
+
+    <!-- Include Leaflet JS and leaflet-omnivore -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+    <script src="https://unpkg.com/leaflet-omnivore@latest/leaflet-omnivore.min.js"></script>
+    <script src="https://unpkg.com/leaflet-providers@1.13.0/leaflet-providers.js"></script>
+
+    <!-- UTM conversion library -->
+    <script src="https://cdn.jsdelivr.net/npm/proj

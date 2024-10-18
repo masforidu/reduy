@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Include Leaflet CSS -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{% static 'images/background.jpg' %}');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+
+        h1, h2 {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        /* Logo Styling */
+        .logo-left, .logo-right {
+            position: absolute;
+            top: 10px;
+            width: 50px;
+            height: auto;
+        }
+
+        .logo-left {
+            left: 10px;
+        }
+
+        .logo-right {
+            right: 10px;
+        }
+
+        /* Map style */
+        #map {
+            height: 400px;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        /* Form Button Styling */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Styling the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        table, th, td {
+            border: 1px solid #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            color: #fff;
+        }
+
+        th {
+            background-color: #4CAF50;
+        }
+
+        /* Image Styling */
+        img {
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Links Styling */
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Style the navigation link */
+        nav {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        nav a {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        nav a:hover {
+            background-color: #45a049;
+        }
+
+        /* Container for central content alignment */
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Display messages here -->
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        <!-- Heading with logos -->
+        <h1> 
+            <img src="{% static 'shegarland/images/orolog.png' %}" alt="Logo Right" class="logo-right">
+            W/ra Lafa Magaalaa Shaggaar 
+            <img src="{% static 'shegarland/images/shegarlog.png' %}" alt="Logo Left" class="logo-left">
+        </h1>
+        
+        <h2>Baga Garaa Fuulaa Sarverii Bankii Lafaa dhuftaan</h2>
+
+        <!-- Navigation Links -->
+        <nav>
+            <a href="{% url 'submit_form' %}">Go to form and map container</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </nav>
+
+        <!-- Password Reset Request Form -->
+        <form method="POST" action="{% url 'create_password_reset_request' %}">
+            {% csrf_token %}
+            <button type="submit">Request Password Reset</button>
+        </form>
+
+        <h1>Ragaa Bankii Lafaa</h1>
+        <!-- Table for displaying form submissions -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Magaalaa</th>
+                    <th>Aanaa</th>
+                    <th>Iddo Adda</th>
+                    <th>Lakk Adda</th>
+                    <th>Gosa Tajajila</th>
+                    <th>Madda Lafa</th>
+                    <th>Tajajila Iddo</th>
+                    <th>Haala Beenya</th>
+                    <th>Qamaa Qophaef</th>
+                    <th>Tajajila Qophaef</th>
+                    <th>Balina Lafa</th>
+                    <th>Kan Qophesse</th>
+                    <th>Guyya Qophae</th>
+                    <th>Shapefile</th>
+                    <th>Suura Iddoo</th>
+                    <th>Mallattoo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in submissions %}
+                <tr>
+                    <td>{{ submission.magaalaa }}</td>
+                    <td>{{ submission.aanaa }}</td>
+                    <td>{{ submission.iddo_adda }}</td>
+                    <td>{{ submission.lakk_adda }}</td>
+                    <td>{{ submission.gosa_tajajila }}</td>
+                    <td>{{ submission.madda_lafa }}</td>
+                    <td>{{ submission.tajajila_iddo }}</td>
+                    <td>{{ submission.haala_beenya }}</td>
+                    <td>{{ submission.qamaa_qophaef }}</td>
+                    <td>{{ submission.tajajila_qophaef }}</td>
+                    <td>{{ submission.balina_lafa }}</td>
+                    <td>{{ submission.kan_qophesse }}</td>
+                    <td>{{ submission.guyya_qophae }}</td>
+                    <td>{{ submission.shapefile }}</td>
+                    <td>
+                        <a href="{{ submission.suura_iddoo.url }}" download>Download</a>
+                        <img src="{{ submission.suura_iddoo.url }}" alt="Suura Iddoo" width="100">
+                    </td>
+                    <td>
+                        {% if submission.Mallattoo %}
+                            <a href="{{ submission.Mallattoo.url }}" download>Download</a>
+                            <img src="{{ submission.Mallattoo.url }}" alt="Mallattoo" width="100">
+                        {% else %}
+                            No image uploaded.
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="16">No submissions found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Map section -->
+        <div id="map"></div>
+    </div>
+
+    <!-- Include Leaflet JS and Leaflet Draw -->
+    <script src="{% static 'leaflet/leaflet.js' %}"></script>
+    <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([9.145, 40.489673], 6); // Centered over Ethiopia
+        
+        // Add the tile layer (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Initialize the draw control
+        var drawControl = new L.Control.Draw({
+            draw: {
+                polygon: true,
+                rectangle: true,
+                marker: true,
+                polyline: false,
+                circle: false
+            }
+        });
+        map.addControl(drawControl);
+
+        // Handle the created shapes
+        map.on(L.Draw.Event.CREATED, function (e) {
+            var layer = e.layer;
+            map.addLayer(layer);
+
+            // Optionally, send the GeoJSON to the server
+            var geojson = layer.toGeoJSON();
+            console.log(JSON.stringify(geojson));
+            // Send this GeoJSON to the server with AJAX if needed
+        });
+    </script>
+</body>
+</html>

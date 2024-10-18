@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h2>Fuula Seensaa/Baga Nagaan Dhuftaan/
+        Kabajamoo Mamilaa Jechaa Darbii fi Lakkofsa Darbii keessan Galchaa/Login Page/</h2>
+    {% if user.is_authenticated %}
+        <p>Baga Nagaan Dhuftan, {{ user.username }}!</p>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Bahuf/logout/</button>
+        </form>
+    {% else %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Seeni!/Login/</button>
+        </form>
+        <!-- Add the password reset link here -->
+        <p><a href="{% url 'password_reset' %}">Lakk darbii yoo dagattan?</a></p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="mabbichuu_qophii_2016_revised" id="mabbichuu_qophii_2016_revised">
+	<SimpleField name="OBJECTID" type="float"></SimpleField>
+	<SimpleField name="Detail_Lan" type="string"></SimpleField>
+	<SimpleField name="General_LU" type="string"></SimpleField>
+	<SimpleField name="General__L" type="string"></SimpleField>
+	<SimpleField name="Detail_LU_" type="string"></SimpleField>
+	<SimpleField name="Area_Ha_" type="float"></SimpleField>
+	<SimpleField name="SHAPE_Leng" type="float"></SimpleField>
+	<SimpleField name="Shape_Le_1" type="float"></SimpleField>
+	<SimpleField name="Shape_Le_2" type="float"></SimpleField>
+	<SimpleField name="Shape_Le_3" type="float"></SimpleField>
+	<SimpleField name="Detail_LU1" type="string"></SimpleField>
+	<SimpleField name="Detail_l_1" type="string"></SimpleField>
+	<SimpleField name="OBJECTID_4" type="float"></SimpleField>
+</Schema>
+<Folder><name>mabbichuu_qophii_2016_revised</name>
+  <Placemark>
+	<Style><LineStyle><color>FF13f4fc</color><width>2.72125</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<ExtendedData><SchemaData schemaUrl="#mabbichuu_qophii_2016_revised">
+		<SimpleData name="Detail_Lan">For Leggery residence</SimpleData>
+		<SimpleData name="General__L">R-1</SimpleData>
+		<SimpleData name="Area_Ha_">104.46491396107</SimpleData>
+	</SchemaData></ExtendedData>
+      <MultiGeometry><Polygon><outerBoundaryIs><LinearRing><coordinates>38.7944000842165,9.10497981091539 38.789920001465,9.10529187156541 38.7848748154221,9.10529872385234 38.779796135227,9.10557991947794 38.7801354923823,9.10740007530133 38.7809254078132,9.10763094081022 38.7825677964161,9.10860959863674 38.7924676246381,9.10839034098212 38.8048820558662,9.10961991540099 38.8051786952619,9.10731534931992 38.8054241859368,9.10558631110814 38.7944000842165,9.10497981091539</coordinates></LinearRing></outerBoundaryIs></Polygon></MultiGeometry>
+  </Placemark>
+  <Placemark>
+	<Style><LineStyle><color>FF13f4fc</color><width>2.72125</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+	<ExtendedData><SchemaData schemaUrl="#mabbichuu_qophii_2016_revised">
+		<SimpleData name="General__L">R</SimpleData>
+		<SimpleData name="Area_Ha_">3.32167813480</SimpleData>
+	</SchemaData></ExtendedData>
+      <MultiGeometry><Polygon><outerBoundaryIs><LinearRing><coordinates>38.7438717052364,9.12180044056949 38.7450430703298,9.12278392984014 38.7464606850554,9.12151649810683 38.7452994200759,9.12067380820871 38.7452558607031,9.12065625583203 38.7438717052364,9.12180044056949</coordinates></LinearRing></outerBoundaryIs></Polygon></MultiGeometry>
+  </Placemark>
+</Folder>
+</Document></kml>
